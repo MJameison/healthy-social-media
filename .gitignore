@@ -1,1 +1,2 @@
-# TODO Later once development actually starts
+# Main Root /gitignore -- define seperate ones in project directories please!
+# This allows you to use template .gitignores easily without having to manage one really large one!
