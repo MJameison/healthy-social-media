@@ -59,10 +59,11 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.notify(2, notification);
     }
 
+
+
     private boolean isNotificationServiceEnabled(){
         String pkgName = getPackageName();
-        final String flat = Settings.Secure.getString(getContentResolver(),
-                "enabled_notification_listeners");
+        final String flat = Settings.Secure.getString(getContentResolver(),"enabled_notification_listeners");
         if (!TextUtils.isEmpty(flat)) {
             final String[] names = flat.split(":");
             for (int i = 0; i < names.length; i++) {
@@ -79,21 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog buildNotificationServiceAlertDialog(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("R.string.notification_listener_service");
-        alertDialogBuilder.setMessage("R.string.notification_listener_service_explanation");
-        alertDialogBuilder.setPositiveButton("R.string.yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
-                    }
-                });
-        alertDialogBuilder.setNegativeButton("R.string.no",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // If you choose to not enable the notification listener
-                        // the app. will not work as expected
-                    }
-                });
+        alertDialogBuilder.setTitle(R.string.notification_listener_service);
+        alertDialogBuilder.setMessage(R.string.notification_listener_service_explanation);
+        // Button actions
+        alertDialogBuilder.setPositiveButton(R.string.yes,
+                (dialog, id) -> startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")));
+        alertDialogBuilder.setNegativeButton(R.string.no,
+                (dialog, id) -> { });
         return(alertDialogBuilder.create());
     }
 }

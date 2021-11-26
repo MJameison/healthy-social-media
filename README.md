@@ -4,9 +4,13 @@ Group repository for CS407
 
 ## PostboxNotification
 
+N.B. Requires android 10 arbitrarily -- will likely relax this later on but when creating a vritual device ensure that SDK >= 29 is selected
+
 This is an android app that creates a background service that monitors notifications and can intercept them.
 It passes on the intercepted notifications to the app itself (TODO) for control and resending at a later date.
 The aim is to allow users to control the notifications they recieve and determine which need to be immediately addressed and which can wait until a set later time.
+
+Currently the service (InterceptionService) runs from when the app is first opened until uninstall -- it survives force quits and restarts for example. At the moment no mechanism to interact with the notifications exists although permissions for this are given.
 
 ## WebTemplate
 

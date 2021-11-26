@@ -9,7 +9,6 @@ public class App extends Application {
 
     public static final String CHANNEL_1_ID = "channel1";
     public static final String CHANNEL_2_ID = "channel2";
-    //public InterceptionService interceptionService;
 
     @Override
     public void onCreate() {
@@ -17,7 +16,6 @@ public class App extends Application {
 
         // Big startup stuff
         createNotificationChannels();
-        //interceptionService = new InterceptionService();
     }
 
     private void createNotificationChannels() {

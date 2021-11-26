@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Postbox Notification</string>
+
+
+    <string name="notification_listener_service">Postbox Notifications</string>
+    <string name="notification_listener_service_explanation">In order for this app to delay notifications it needs it\'s notification interception service enabled. Enable it now?</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
