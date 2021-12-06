@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Notification;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.service.notification.StatusBarNotification;
@@ -99,12 +101,25 @@ public class MainActivity extends AppCompatActivity {
             linearScroll.addView(notif);
 
             // Add image to LHS
-            // TODO: Get notification image
+            // TODO: Image doesn't work properly -- other apps do bnot show potentially hardcode common values in?
             ImageView small_icon = new ImageView(this);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.CENTER_VERTICAL;
             small_icon.setLayoutParams(params);
-            small_icon.setImageResource(R.drawable.ic_one);
+
+            try {
+                Resources res = getPackageManager().getResourcesForApplication(sbn.getPackageName());
+                int resId = sbn.getNotification().getSmallIcon().getResId();
+                if(resId != 0) {
+                    Log.i("ResId", res.getResourceName(resId));
+                    small_icon.setImageDrawable(res.getDrawable(resId, getTheme()));
+                }
+
+            } catch (PackageManager.NameNotFoundException e) {
+                Log.w("ResId", "Error!!!");
+            }
+
+
             notif.addView(small_icon);
 
             // Add LinearLayout to RHS
