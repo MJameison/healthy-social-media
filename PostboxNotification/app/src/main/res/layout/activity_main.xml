@@ -12,12 +12,16 @@
         android:id="@+id/edit_text_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="text"
+        android:autofillHints=""
         android:hint="Title"/>
 
     <EditText
         android:id="@+id/edit_text_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="text"
+        android:autofillHints=""
         android:hint="Message"/>
 
     <Button
@@ -31,5 +35,32 @@
         android:layout_height="wrap_content"
         android:text="Send on Channel 2"
         android:onClick="sendOnChannel2"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/collect_mail_btn"
+        android:onClick="collectMail"/>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/linear_layout_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_mail_text"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

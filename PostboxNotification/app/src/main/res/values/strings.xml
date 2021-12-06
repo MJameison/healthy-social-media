@@ -7,4 +7,7 @@
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
+
+    <string name="collect_mail_btn">Collect Mail Now</string>
+    <string name="no_mail_text">No mail!</string>
 </resources>
