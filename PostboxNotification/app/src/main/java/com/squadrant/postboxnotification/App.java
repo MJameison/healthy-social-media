@@ -1,5 +1,6 @@
-package com.example.postboxnotification;
+package com.squadrant.postboxnotification;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -17,6 +18,7 @@ public class App extends Application {
         createNotificationChannels();
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     private void createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel1 = new NotificationChannel(

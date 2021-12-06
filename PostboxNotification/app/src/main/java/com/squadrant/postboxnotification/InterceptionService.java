@@ -1,7 +1,5 @@
-package com.example.postboxnotification;
+package com.squadrant.postboxnotification;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
