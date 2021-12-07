@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.service.notification.StatusBarNotification;
@@ -16,7 +15,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -117,84 +115,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-            // Horizontal Layout
-            LinearLayout notif = new LinearLayout(this);
-            notif.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            notif.setOrientation(LinearLayout.HORIZONTAL);
-            linearScroll.addView(notif);
-
-            // Add image to LHS
-            // TODO: Image doesn't work properly -- other apps do bnot show potentially hardcode common values in?
-            ImageView small_icon = new ImageView(this);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.gravity = Gravity.CENTER_VERTICAL;
-            params.weight = 1;
-            small_icon.setLayoutParams(params);
-            try {
-                Resources res = getPackageManager().getResourcesForApplication(sbn.getPackageName());
-                int resId = sbn.getNotification().getSmallIcon().getResId();
-                if(resId != 0) {
-                    Log.i("ResId", res.getResourceName(resId));
-                    small_icon.setImageDrawable(res.getDrawable(resId, getTheme()));
-                }
-
-            } catch (PackageManager.NameNotFoundException e) {
-                Log.w("ResId", "Error!!!");
-            }
-            notif.addView(small_icon);
-
-
-            // Add LinearLayout to RHS
-            LinearLayout details = new LinearLayout(this);
-            params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.weight = 18;
-            details.setLayoutParams(params);
-            details.setOrientation(LinearLayout.VERTICAL);
-            notif.addView(details);
-
-
-            // Add app title
-            TextView app = new TextView(this);
-            Log.i("OUTPUT", sbn.getPackageName());
-            app.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            ApplicationInfo ai;
-            try {
-                ai = getApplicationContext().getPackageManager().getApplicationInfo(sbn.getPackageName(), 0);
-            } catch (PackageManager.NameNotFoundException e) {
-                ai = null;
-            }
-            app.setText(ai != null ? getApplicationContext().getPackageManager().getApplicationLabel(ai) : "(unknown)");
-            details.addView(app);
-
-            // Add notif title
-            TextView title = new TextView(this);
-            Log.i("OUTPUT", extras.getString(Notification.EXTRA_TITLE));
-            title.setText(extras.getString(Notification.EXTRA_TITLE));
-            title.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            details.addView(title);
-
-            // Add notif content
-            TextView content = new TextView(this);
-            Log.i("OUTPUT", extras.getString(Notification.EXTRA_TEXT));
-            content.setText(extras.getString(Notification.EXTRA_TEXT));
-            content.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            details.addView(content);
-
-
-            // Add close button
-            ImageView close = new ImageView(this);
-            params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.weight = 1;
-            params.gravity = Gravity.CENTER_VERTICAL;
-            close.setLayoutParams(params);
-            close.setImageResource(R.drawable.ic_close);
-            final int notifId = i-1;
-            close.setOnClickListener(v -> {
+            NotificationView notifView = new NotificationView(this);
+            notifView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            linearScroll.addView(notifView);
+            notifView.setSBN(sbn);
+            int notifId = i-1;
+            notifView.setCloseMethod(v -> {
                 storedNotifications.remove(notifId);
                 drawNotifications();
             });
-            notif.addView(close);
-
         }
     }
 
