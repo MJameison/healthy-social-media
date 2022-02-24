@@ -5,13 +5,10 @@ import android.app.Notification;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -60,21 +57,12 @@ public class NotificationView extends LinearLayout {
         Bundle extras = notif.extras;
 
         // App icon
-        /*
-        try {
-            Resources res = getPackageManager().getResourcesForApplication(sbn.getPackageName());
-            int resId = sbn.getNotification().getSmallIcon().getResId();
-            if(resId != 0) {
-                Log.i("ResId", res.getResourceName(resId));
-                small_icon.setImageDrawable(res.getDrawable(resId, getTheme()));
-            }
-
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.w("ResId", "Error!!!");
-        }
-         */
         // TODO: Add default if not in our package! For each main app a default unknown
-        mNotifIcon.setImageResource(notif.getSmallIcon().getResId());
+        // Create a lookup somewhere -- static file?
+        // Use that with a switch + default case
+        // Or a function of package name -> icon?
+        //mNotifIcon.setImageResource(notif.getSmallIcon().getResId());
+        mNotifIcon.setImageResource(getNotifIconResource(sbn.getPackageName()));
 
         // App title
         ApplicationInfo ai;
@@ -95,5 +83,15 @@ public class NotificationView extends LinearLayout {
 
     public void setCloseMethod(OnClickListener listener) {
         mClose.setOnClickListener(listener);
+    }
+
+    private static int getNotifIconResource(String packageName) {
+        switch (packageName) {
+            case "com.squadrant.postboxnotification":
+                return R.mipmap.ic_launcher;
+            case "com.google.android.apps.messaging":
+                return R.drawable.text_message;
+        }
+        return R.drawable.exclamation_mark;
     }
 }

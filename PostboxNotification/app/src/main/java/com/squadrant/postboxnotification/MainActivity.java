@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextTitle;
     private EditText editTextMessage;
     private LinearLayout linearScroll;
+    private static MainActivity instance;
 
     private ArrayList<StatusBarNotification> storedNotifications = new ArrayList<>();
 
@@ -49,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
             buildNotificationServiceAlertDialog().show();
         }
 
+        instance = this;
+
+        // Add the missed notifs
+        for (StatusBarNotification sbn : InterceptionService.GetSBNs()) {
+            recieveNotification(sbn);
+        }
+
+        drawNotifications();
     }
 
     public void sendOnChannel1(View v) {
@@ -75,12 +84,12 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.notify(2, notification);
     }
 
-    public void collectMail(View v) {
-        StatusBarNotification[] sbns = InterceptionService.instance.getNotifications();
-        for (StatusBarNotification sbn : sbns) {
-            storedNotifications.add(sbn);
-        }
-        InterceptionService.instance.clearPostbox();
+    public static void RecieveNotification(StatusBarNotification sbn) {
+        instance.recieveNotification(sbn);
+    }
+
+    private void recieveNotification(StatusBarNotification sbn) {
+        storedNotifications.add(sbn);
         drawNotifications();
     }
 
@@ -122,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
             int notifId = i-1;
             notifView.setCloseMethod(v -> {
                 storedNotifications.remove(notifId);
+                InterceptionService.RemoveSBN(notifId);
                 drawNotifications();
             });
         }

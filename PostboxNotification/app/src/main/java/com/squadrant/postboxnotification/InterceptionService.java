@@ -13,15 +13,13 @@ public class InterceptionService extends NotificationListenerService {
     Context context;
 
     private boolean blockingEnabled = true;
-    protected static InterceptionService instance;
 
-    private ArrayList<StatusBarNotification> postbox;
+    private static ArrayList<StatusBarNotification> postbox;
 
     @Override
     public void onCreate () {
         super .onCreate();
         context = getApplicationContext();
-        instance = this;
         postbox = new ArrayList<>();
     }
     @Override
@@ -37,6 +35,7 @@ public class InterceptionService extends NotificationListenerService {
             //snoozeNotification(sbn.getKey(), snoozeMillis);
 
             postbox.add(sbn);
+            MainActivity.RecieveNotification(sbn);
         }
 
     }
@@ -49,8 +48,12 @@ public class InterceptionService extends NotificationListenerService {
         return postbox.toArray(new StatusBarNotification[0]);
     }
 
-    public void clearPostbox() {
-        postbox.clear();
+    public static ArrayList<StatusBarNotification> GetSBNs() {
+        return postbox;
+    }
+
+    public static void RemoveSBN(int index) {
+        postbox.remove(index);
     }
 
     private boolean shouldBlock(StatusBarNotification sbn) {
