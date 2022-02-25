@@ -87,8 +87,6 @@ public class NotificationView extends LinearLayout {
 
     private static int getNotifIconResource(String packageName) {
         switch (packageName) {
-            case "com.squadrant.postboxnotification":
-                return R.mipmap.ic_launcher;
             case "com.google.android.apps.messaging":
                 return R.drawable.text_message;
         }
