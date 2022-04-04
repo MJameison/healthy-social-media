@@ -1,9 +1,12 @@
 package com.squadrant.postboxnotification;
 
 import android.content.Context;
+import android.content.Intent;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
 
@@ -30,12 +33,8 @@ public class InterceptionService extends NotificationListenerService {
 
         // Check if we should block the notification
         if (blockingEnabled && shouldBlock(sbn)) {
-            // Calculate time to next display period
-            //long snoozeMillis = 10000;
-            //snoozeNotification(sbn.getKey(), snoozeMillis);
-
             postbox.add(sbn);
-            MainActivity.RecieveNotification(sbn);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent("Postbox-Update"));
         }
 
     }

@@ -2,12 +2,16 @@ package com.squadrant.postboxnotification;
 
 import android.app.AlertDialog;
 import android.app.Notification;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.provider.Browser;
 import android.provider.Settings;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
@@ -23,6 +27,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.util.ArrayList;
 
@@ -32,9 +37,29 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextTitle;
     private EditText editTextMessage;
     private LinearLayout linearScroll;
-    private static MainActivity instance;
 
-    private ArrayList<StatusBarNotification> storedNotifications = new ArrayList<>();
+    //private ArrayList<StatusBarNotification> storedNotifications = new ArrayList<>();
+
+    private final BroadcastReceiver messageReciever = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            drawNotifications();
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(messageReciever, new IntentFilter("Postbox-Update"));
+        // Redraw since there may be new notifications
+        drawNotifications();
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReciever);
+        super.onPause();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(!isNotificationServiceEnabled()) {
             buildNotificationServiceAlertDialog().show();
-        }
-
-        instance = this;
-
-        // Add the missed notifs
-        for (StatusBarNotification sbn : InterceptionService.GetSBNs()) {
-            recieveNotification(sbn);
         }
 
         drawNotifications();
@@ -84,21 +102,15 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.notify(2, notification);
     }
 
-    public static void RecieveNotification(StatusBarNotification sbn) {
-        instance.recieveNotification(sbn);
-    }
-
-    private void recieveNotification(StatusBarNotification sbn) {
-        storedNotifications.add(sbn);
-        drawNotifications();
-    }
-
     private void drawNotifications() {
+        // Fetch the SBNs to display
+        ArrayList<StatusBarNotification> sbns = InterceptionService.GetSBNs();
+
         //Clear the existing display
         linearScroll.removeAllViews();
 
         // If we don't have any messages display the empty message
-        if(storedNotifications.size() == 0) {
+        if(sbns.size() == 0) {
             Log.i("Output", "Empty!!!");
 
             TextView empty = new TextView(this);
@@ -110,13 +122,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         int i = 0;
-        for (StatusBarNotification sbn : storedNotifications) {
+        for (StatusBarNotification sbn : sbns) {
             Log.i("Output", sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName() + "\t" + sbn.getKey());
 
             Bundle extras = sbn.getNotification().extras;
 
             // Horizontal Divider
-            if (i++ > 0) {
+            if (i > 0) {
                 View divider = new View(this);
                 divider.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2));
                 divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray, null));
@@ -128,12 +140,14 @@ public class MainActivity extends AppCompatActivity {
             notifView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             linearScroll.addView(notifView);
             notifView.setSBN(sbn);
-            int notifId = i-1;
+
+            int notificationID = i;
             notifView.setCloseMethod(v -> {
-                storedNotifications.remove(notifId);
-                InterceptionService.RemoveSBN(notifId);
+                InterceptionService.RemoveSBN(notificationID);
                 drawNotifications();
             });
+
+            i++;
         }
     }
 
