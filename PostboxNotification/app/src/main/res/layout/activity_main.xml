@@ -35,26 +35,10 @@
         android:text="Send on Channel 2"
         android:onClick="sendOnChannel2"/>
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        android:fillViewport="true">
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:id="@+id/linear_layout_scroll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_mail_text"/>
-
-
-        </LinearLayout>
-
-    </ScrollView>
 
 </LinearLayout>
