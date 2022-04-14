@@ -4,12 +4,23 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/cs407/PostboxNotification/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
+        <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/drawable-anydpi/drop_arrow_down.xml" value="0.2" />
+        <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/drawable-anydpi/drop_arrow_up.xml" value="0.2" />
+        <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/drawable-anydpi/exclamation_mark.xml" value="0.2" />
         <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/drawable-anydpi/ic_close.xml" value="0.3880208333333333" />
+        <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/drawable-anydpi/text_message.xml" value="0.2" />
         <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/drawable-mdpi/ic_close.xml" value="1.2375" />
+        <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2" />
+        <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2" />
+        <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/drawable/ic_mail_outline.xml" value="0.2" />
         <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/drawable/ic_one.xml" value="0.309375" />
+        <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/drawable/ic_widgets.xml" value="0.2" />
         <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/layout/fragment_create_notifications.xml" value="0.1921875" />
         <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/layout/fragment_display_notifications.xml" value="0.24473842453397474" />
         <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/layout/notification_layout.xml" value="0.23020833333333332" />
+        <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.2598958333333333" />
+        <entry key="..\:/cs407/healthy-social-media/PostboxNotification/app/src/main/res/xml/root_preferences.xml" value="0.1921875" />
       </map>
     </option>
   </component>

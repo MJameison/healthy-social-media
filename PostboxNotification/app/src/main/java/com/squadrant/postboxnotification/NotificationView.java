@@ -57,22 +57,10 @@ public class NotificationView extends LinearLayout {
         Bundle extras = notif.extras;
 
         // App icon
-        // TODO: Add default if not in our package! For each main app a default unknown
-        // Create a lookup somewhere -- static file?
-        // Use that with a switch + default case
-        // Or a function of package name -> icon?
-        //mNotifIcon.setImageResource(notif.getSmallIcon().getResId());
         mNotifIcon.setImageResource(getNotifIconResource(sbn.getPackageName()));
 
         // App title
-        ApplicationInfo ai;
-        try {
-            ai = getContext().getPackageManager().getApplicationInfo(sbn.getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            ai = null;
-        }
-        mAppName.setText(ai != null ? getContext().getPackageManager().getApplicationLabel(ai) : "(unknown)");
-
+        mAppName.setText(getAppNameFromPackage(sbn.getPackageName()));
 
         // Notif Title
         mNotifTitle.setText(extras.getString(Notification.EXTRA_TITLE));
@@ -85,11 +73,23 @@ public class NotificationView extends LinearLayout {
         mClose.setOnClickListener(listener);
     }
 
+    private String getAppNameFromPackage(String packageName) {
+        ApplicationInfo ai;
+        try {
+            ai = getContext().getPackageManager().getApplicationInfo(packageName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            ai = null;
+        }
+        return ai != null ? (String) getContext().getPackageManager().getApplicationLabel(ai) : "(unknown)";
+    }
+
     private static int getNotifIconResource(String packageName) {
+        // TODO: Populate with common SM apps
         switch (packageName) {
             case "com.google.android.apps.messaging":
                 return R.drawable.text_message;
+            default:
+                return R.drawable.exclamation_mark;
         }
-        return R.drawable.exclamation_mark;
     }
 }

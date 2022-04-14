@@ -22,10 +22,9 @@ import java.util.ArrayList;
 
 public class DisplayNotificationsFragment extends Fragment {
 
-    private View rootView;
     private LinearLayout notifContainer;
 
-    private final BroadcastReceiver messageReciever = new BroadcastReceiver() {
+    private final BroadcastReceiver messageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             redrawNotifications();
@@ -38,21 +37,21 @@ public class DisplayNotificationsFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.fragment_display_notifications, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_display_notifications, container, false);
         notifContainer = rootView.findViewById(R.id.notifContainerLayout);
         return rootView;
     }
 
     @Override
     public void onPause() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(messageReciever);
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(messageReceiver);
         super.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(messageReciever, new IntentFilter("Postbox-Update"));
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(messageReceiver, new IntentFilter("Postbox-Update"));
         // Redraw since there may be new notifications
         redrawNotifications();
     }
@@ -86,7 +85,7 @@ public class DisplayNotificationsFragment extends Fragment {
             if (i > 0) {
                 View divider = new View(getActivity());
                 divider.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2));
-                divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray, null));
+                //divider.setBackgroundColor(getResources().getColor(android.R.color.darker_gray, null));
                 notifContainer.addView(divider);
             }
 
