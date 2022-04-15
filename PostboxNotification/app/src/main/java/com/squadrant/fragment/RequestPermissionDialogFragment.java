@@ -1,4 +1,4 @@
-package com.squadrant.postboxnotification;
+package com.squadrant.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,6 +8,8 @@ import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+
+import com.squadrant.postboxnotification.R;
 
 public class RequestPermissionDialogFragment extends DialogFragment {
 

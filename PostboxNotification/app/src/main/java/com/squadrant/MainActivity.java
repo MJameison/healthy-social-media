@@ -1,10 +1,14 @@
-package com.squadrant.postboxnotification;
+package com.squadrant;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.squadrant.fragment.CreateNotificationsFragment;
+import com.squadrant.fragment.DisplayNotificationsFragment;
+import com.squadrant.fragment.SettingsFragment;
+import com.squadrant.postboxnotification.R;
 
 public class MainActivity extends AppCompatActivity {
 

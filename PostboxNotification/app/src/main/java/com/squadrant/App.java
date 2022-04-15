@@ -1,4 +1,4 @@
-package com.squadrant.postboxnotification;
+package com.squadrant;
 
 import android.annotation.SuppressLint;
 import android.app.Application;

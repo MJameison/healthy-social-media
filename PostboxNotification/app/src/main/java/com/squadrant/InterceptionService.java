@@ -1,4 +1,4 @@
-package com.squadrant.postboxnotification;
+package com.squadrant;
 
 import android.content.Context;
 import android.content.Intent;

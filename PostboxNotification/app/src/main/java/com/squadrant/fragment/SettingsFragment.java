@@ -1,4 +1,4 @@
-package com.squadrant.postboxnotification;
+package com.squadrant.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -10,6 +10,8 @@ import android.text.TextUtils;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
+
+import com.squadrant.postboxnotification.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 

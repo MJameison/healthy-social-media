@@ -4,20 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DisplayNotificationsFragment">
+    tools:context="com.squadrant.fragment.DisplayNotificationsFragment">
 
-    <LinearLayout
-        android:id="@+id/notifContainerLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notification_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:animateLayoutChanges="true">
+        tools:listitem="@layout/stored_notification_item"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/no_mail_text"/>
-
-
-    </LinearLayout>
 </androidx.core.widget.NestedScrollView>

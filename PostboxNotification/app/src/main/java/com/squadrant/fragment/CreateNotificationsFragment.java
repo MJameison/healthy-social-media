@@ -1,4 +1,4 @@
-package com.squadrant.postboxnotification;
+package com.squadrant.fragment;
 
 import android.app.Notification;
 import android.os.Bundle;
@@ -6,13 +6,15 @@ import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.squadrant.App;
+import com.squadrant.postboxnotification.R;
 
 public class CreateNotificationsFragment extends Fragment {
 
