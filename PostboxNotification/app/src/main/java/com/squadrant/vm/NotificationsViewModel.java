@@ -15,13 +15,7 @@ public class NotificationsViewModel extends ViewModel {
 
     public NotificationsViewModel() {
         super();
-        // TODO: Setup repo and get notifs
         notificationLiveData = repository.getNotifications();
-    }
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
     }
 
     public LiveData<List<StoredNotification>> getNotificationLiveData() { return notificationLiveData; }

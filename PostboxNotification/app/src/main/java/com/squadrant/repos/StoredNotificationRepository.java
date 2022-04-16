@@ -38,21 +38,38 @@ public class StoredNotificationRepository {
      */
     public void addItem(StoredNotification storedNotification) {
         Log.i("SNRepo", "Adding notification: " + storedNotification.getKey());
-        // Add / Update the live data
+        // Update the live data
         List<StoredNotification> list = notificationListLiveData.getValue();
         if (list == null)
             list = new ArrayList<>();
+        // If there is already a notification with the same key remove it (no duplicate keys)
+        list.remove(storedNotification);
+        // Then insert the new value with that key
         list.add(storedNotification);
         notificationListLiveData.setValue(list);
-        // Write it to the file
+
+        // Write to file for permanency
+        writeNotificationsToFile(list);
     }
 
     /**
      * Removes the notification with matching source package and id number.
      */
     public void removeItem(StoredNotification storedNotification) {
-        // Remove the notification
+        Log.i("SNRepo", "Removing notification: " + storedNotification.getKey());
+        // Update the live data
+        List<StoredNotification> list = notificationListLiveData.getValue();
+        if (list == null)
+            list = new ArrayList<>();
+        // If there is already a notification with the same key remove it (no duplicate keys)
+        list.remove(storedNotification);
+        notificationListLiveData.setValue(list);
 
-        // Remove it from the file
+        // Write to file for permanency
+        writeNotificationsToFile(list);
+    }
+
+    private void writeNotificationsToFile(List<StoredNotification> notifications) {
+        // TODO
     }
 }

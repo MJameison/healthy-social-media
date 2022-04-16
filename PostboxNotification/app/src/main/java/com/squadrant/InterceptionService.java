@@ -16,10 +16,6 @@ public class InterceptionService extends NotificationListenerService {
     private final String TAG = this.getClass().getSimpleName();
 
     @Override
-    public void onCreate () {
-        super.onCreate();
-    }
-    @Override
     public void onNotificationPosted (StatusBarNotification sbn) {
         Log.i(TAG ,"Received:" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName() + "\t" + sbn.getKey());
 
@@ -46,7 +42,7 @@ public class InterceptionService extends NotificationListenerService {
 
     private boolean shouldBlock(StatusBarNotification sbn) {
         // Blocking logic goes here
-
+        // TODO
         return true;
     }
 }
