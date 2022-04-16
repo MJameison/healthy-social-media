@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.squadrant.fragment.CreateNotificationsFragment"
+    tools:context="com.squadrant.ui.CreateNotificationsFragment"
     android:orientation="vertical"
     android:layout_margin="4dp">
 
@@ -12,30 +12,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:hint="Title" />
+        android:hint="@string/debug_create_notification_title"
+        android:importantForAutofill="no"/>
 
     <EditText
         android:id="@+id/edit_text_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:hint="Message" />
+        android:hint="@string/debug_create_notification_message"
+        android:importantForAutofill="no"/>
 
     <Button
         android:id="@+id/debug_send_ch1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send on Channel 1" />
+        android:text="@string/debug_send_channel_one" />
 
     <Button
         android:id="@+id/debug_send_ch2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send on Channel 2" />
+        android:text="@string/debug_send_channel_two" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="This is for debug purposes and allows you to easily generate notifications to test with." />
+        android:text="@string/debug_explanation_text" />
 
 </LinearLayout>

@@ -5,12 +5,19 @@ package com.squadrant.model;
  */
 public class StoredNotification {
     // Identifying fields
-    private String sourcePackageName;
-    private int notificationID;
+    private final String key;
 
     // Extras
     public long notificationWhen;
     public String notificationTitle;
     public String notificationContent;
     public String notificationChannelID;
+
+    public StoredNotification(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
+    }
 }

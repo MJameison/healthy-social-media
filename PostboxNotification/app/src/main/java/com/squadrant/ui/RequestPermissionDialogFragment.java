@@ -1,4 +1,4 @@
-package com.squadrant.fragment;
+package com.squadrant.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

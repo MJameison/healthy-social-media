@@ -10,12 +10,12 @@ import java.util.List;
 
 public class NotificationsViewModel extends ViewModel {
 
-    private LiveData<List<StoredNotification>> notificationLiveData;
+    private final StoredNotificationRepository repository = StoredNotificationRepository.getInstance();
+    private final LiveData<List<StoredNotification>> notificationLiveData;
 
     public NotificationsViewModel() {
         super();
         // TODO: Setup repo and get notifs
-        StoredNotificationRepository repository = StoredNotificationRepository.getInstance();
         notificationLiveData = repository.getNotifications();
     }
 

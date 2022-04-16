@@ -1,6 +1,7 @@
-package com.squadrant.fragment;
+package com.squadrant.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,9 @@ public class DisplayNotificationsFragment extends Fragment {
     }
 
     private void initRecyclerView(List<StoredNotification> notifications) {
+        if (notifications.isEmpty()) {
+            Log.i("DisplayNotificationsFragment", "Is Empty!");
+        }
         StoredNotificationAdapter adapter = new StoredNotificationAdapter(requireContext(), notifications);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         notificationRecyclerView.setLayoutManager(layoutManager);

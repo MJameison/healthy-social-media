@@ -1,35 +1,27 @@
 package com.squadrant;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceManager;
 
-import java.util.ArrayList;
+import com.squadrant.model.StoredNotification;
+import com.squadrant.repos.StoredNotificationRepository;
+import com.squadrant.util.StoredNotificationBuilder;
 
 
 public class InterceptionService extends NotificationListenerService {
-    private final String TAG = this .getClass().getSimpleName();
-    Context context;
-
-    private static ArrayList<StatusBarNotification> postbox;
+    private final String TAG = this.getClass().getSimpleName();
 
     @Override
     public void onCreate () {
         super.onCreate();
-        context = getApplicationContext();
-        postbox = new ArrayList<>();
     }
     @Override
     public void onNotificationPosted (StatusBarNotification sbn) {
-        Log.i(TAG ,"Posted ID:" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName() + "\t" + sbn.getKey());
-
-        Log.i(TAG, sbn.getNotification().getChannelId());
+        Log.i(TAG ,"Received:" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName() + "\t" + sbn.getKey());
 
         // Check if we should block the notification
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -38,25 +30,18 @@ public class InterceptionService extends NotificationListenerService {
         boolean blockingEnabled = preferences.getBoolean("block_notifications", false);
 
         if (interceptionEnabled && shouldBlock(sbn)) {
-            postbox.add(sbn);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent("Postbox-Update"));
+            // Add notification to the repository
+            StoredNotification sn = StoredNotificationBuilder.createFromStatusBarNotification(sbn);
+            StoredNotificationRepository.getInstance().addItem(sn);
 
             if (blockingEnabled)
                 cancelNotification(sbn.getKey());
         }
-
     }
+
     @Override
     public void onNotificationRemoved (StatusBarNotification sbn) {
         Log.i(TAG ,"Removed ID:" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
-    }
-
-    public static ArrayList<StatusBarNotification> GetSBNs() {
-        return postbox;
-    }
-
-    public static void RemoveSBN(int index) {
-        postbox.remove(index);
     }
 
     private boolean shouldBlock(StatusBarNotification sbn) {

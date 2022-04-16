@@ -1,4 +1,4 @@
-package com.squadrant.fragment;
+package com.squadrant.ui;
 
 import android.app.Notification;
 import android.os.Bundle;
@@ -38,6 +38,9 @@ public class CreateNotificationsFragment extends Fragment {
             String title = editTextTitle.getText().toString();
             String message = editTextMessage.getText().toString();
 
+            if (title.equalsIgnoreCase("")) title = "Title";
+            if (message.equalsIgnoreCase("")) message = "Message";
+
             Notification notification = new NotificationCompat.Builder(requireContext(), App.CHANNEL_1_ID)
                     .setSmallIcon(R.drawable.ic_one)
                     .setContentTitle(title)
@@ -49,6 +52,9 @@ public class CreateNotificationsFragment extends Fragment {
         send2.setOnClickListener(v -> {
             String title = editTextTitle.getText().toString();
             String message = editTextMessage.getText().toString();
+
+            if (title.equalsIgnoreCase("")) title = "Title";
+            if (message.equalsIgnoreCase("")) message = "Message";
 
             Notification notification = new NotificationCompat.Builder(requireContext(), App.CHANNEL_2_ID)
                     .setSmallIcon(R.drawable.ic_two)

@@ -1,16 +1,23 @@
 <resources>
     <string name="app_name">Postbox Notification</string>
 
-
+    <!--Enable Listener Service-->
     <string name="notification_listener_service">Postbox Notifications</string>
-    <string name="notification_listener_service_explanation">In order for this app to delay notifications it needs it\'s notification interception service enabled. Enable it now?</string>
+    <string name="notification_listener_service_explanation">In order to enable notification interception this app needs permission to view and modify notifications. Enable this now?</string>
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
     <string name="no_mail_text">No mail!</string>
 
+    <!--Bottom Navigation Bar titles-->
     <string name="nav_postbox_title">Inbox</string>
     <string name="nav_settings_title">Settings</string>
     <string name="nav_debug_title">Debug</string>
+    <string name="debug_create_notification_title">Title</string>
+    <string name="debug_create_notification_message">Message</string>
+    <string name="debug_send_channel_one">Send on Channel 1</string>
+    <string name="debug_send_channel_two">Send on Channel 2</string>
+    <string name="debug_explanation_text">This is for debug purposes and allows you to easily generate notifications to test with.</string>
+
 </resources>
