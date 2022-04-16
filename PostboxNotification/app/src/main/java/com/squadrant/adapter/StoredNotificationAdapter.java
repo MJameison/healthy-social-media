@@ -50,6 +50,10 @@ public class StoredNotificationAdapter extends RecyclerView.Adapter<StoredNotifi
         return notifications.size();
     }
 
+    public StoredNotification getAt(int position) {
+        return notifications.get(position);
+    }
+
     class StoredNotificationViewHolder extends RecyclerView.ViewHolder {
         final ImageView appIconView;
         final TextView appNameView;

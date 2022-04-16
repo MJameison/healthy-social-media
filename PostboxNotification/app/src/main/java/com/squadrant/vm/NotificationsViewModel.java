@@ -7,6 +7,7 @@ import com.squadrant.model.StoredNotification;
 import com.squadrant.repos.StoredNotificationRepository;
 
 import java.util.List;
+import java.util.Objects;
 
 public class NotificationsViewModel extends ViewModel {
 
@@ -19,4 +20,17 @@ public class NotificationsViewModel extends ViewModel {
     }
 
     public LiveData<List<StoredNotification>> getNotificationLiveData() { return notificationLiveData; }
+
+    public StoredNotification removeAt(int position) {
+        // Get the value to be removed
+        StoredNotification sn = Objects.requireNonNull(notificationLiveData.getValue()).get(position);
+        // Remove the value (from the repository)
+        repository.removeItem(sn);
+
+        return sn;
+    }
+
+    public void addNotification(StoredNotification sn) {
+        repository.addItem(sn);
+    }
 }

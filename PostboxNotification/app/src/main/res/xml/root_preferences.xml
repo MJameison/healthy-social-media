@@ -30,6 +30,13 @@
             app:summaryOn="Intercepted notifications will only appear in this app"
             app:title="Can Block Notifications" />
 
+        <SwitchPreferenceCompat
+            app:dependency="intercept_notifications"
+            app:key="remove_cancelled"
+            app:summaryOff="Notifications you cancel will remain in this app"
+            app:summaryOn="Notifications you cancel will also be removed from this app"
+            app:title="Remove Cancelled Notifications"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="Application Settings">

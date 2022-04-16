@@ -17,8 +17,6 @@ public class InterceptionService extends NotificationListenerService {
 
     @Override
     public void onNotificationPosted (StatusBarNotification sbn) {
-        Log.i(TAG ,"Received:" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName() + "\t" + sbn.getKey());
-
         // Check if we should block the notification
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -37,7 +35,17 @@ public class InterceptionService extends NotificationListenerService {
 
     @Override
     public void onNotificationRemoved (StatusBarNotification sbn) {
-        Log.i(TAG ,"Removed ID:" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        boolean interceptionEnabled = preferences.getBoolean("intercept_notifications", false);
+        boolean blockingEnabled = preferences.getBoolean("block_notifications", false);
+        boolean removeCancelled = preferences.getBoolean("remove_cancelled", false);
+
+        if (interceptionEnabled && removeCancelled && !blockingEnabled) {
+            // Remove the notification since the app wants us to
+            StoredNotification sn = StoredNotificationBuilder.createFromStatusBarNotification(sbn);
+            StoredNotificationRepository.getInstance().removeItem(sn);
+        }
     }
 
     private boolean shouldBlock(StatusBarNotification sbn) {

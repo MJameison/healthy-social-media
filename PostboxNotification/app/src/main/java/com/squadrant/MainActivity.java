@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.squadrant.ui.CreateNotificationsFragment;
+import com.squadrant.ui.DebugFragment;
 import com.squadrant.ui.DisplayNotificationsFragment;
 import com.squadrant.ui.SettingsFragment;
 import com.squadrant.postboxnotification.R;
@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final DisplayNotificationsFragment notificationsFragment = new DisplayNotificationsFragment();
     private final SettingsFragment settingsFragment = new SettingsFragment();
-    private final CreateNotificationsFragment createNotificationsFragment = new CreateNotificationsFragment();
+    private final DebugFragment debugFragment = new DebugFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             if (itemId == R.id.nav_debug) {
                 getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true)
-                        .replace(R.id.fragment_container_view, createNotificationsFragment)
+                        .replace(R.id.fragment_container_view, debugFragment)
                         .commit();
                 return true;
             }

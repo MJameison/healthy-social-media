@@ -16,7 +16,7 @@ import android.widget.EditText;
 import com.squadrant.App;
 import com.squadrant.postboxnotification.R;
 
-public class CreateNotificationsFragment extends Fragment {
+public class DebugFragment extends Fragment {
 
     private NotificationManagerCompat notificationManager;
     private EditText editTextTitle;
@@ -26,7 +26,7 @@ public class CreateNotificationsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_create_notifications, container, false);
+        View rootView =  inflater.inflate(R.layout.fragment_debug, container, false);
         notificationManager = NotificationManagerCompat.from(requireContext());
         editTextTitle = rootView.findViewById(R.id.edit_text_title);
         editTextMessage = rootView.findViewById(R.id.edit_text_message);

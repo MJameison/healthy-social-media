@@ -21,7 +21,7 @@ public class StoredNotificationRepository {
 
     private StoredNotificationRepository() {
         // Temp code to display something for now
-        List<StoredNotification> notifications = new ArrayList<>();
+        List<StoredNotification> notifications = readNotificationsFromFile();
         notificationListLiveData.setValue(notifications);
 
         // Instead query and get the underlying value
@@ -31,11 +31,6 @@ public class StoredNotificationRepository {
         return notificationListLiveData;
     }
 
-    /* These are the main methods to update the Stored Notification data
-    * They should also handle interacting with the underlying storage mechanism to ensure it stays up to date */
-    /**
-     * Adds the provided StoredNotification. If a StoredNotification with matching source packet and id is already present this replaces that value
-     */
     public void addItem(StoredNotification storedNotification) {
         Log.i("SNRepo", "Adding notification: " + storedNotification.getKey());
         // Update the live data
@@ -52,9 +47,6 @@ public class StoredNotificationRepository {
         writeNotificationsToFile(list);
     }
 
-    /**
-     * Removes the notification with matching source package and id number.
-     */
     public void removeItem(StoredNotification storedNotification) {
         Log.i("SNRepo", "Removing notification: " + storedNotification.getKey());
         // Update the live data
@@ -71,5 +63,10 @@ public class StoredNotificationRepository {
 
     private void writeNotificationsToFile(List<StoredNotification> notifications) {
         // TODO
+    }
+
+    private List<StoredNotification> readNotificationsFromFile() {
+        // TODO
+        return null;
     }
 }
