@@ -1,17 +1,27 @@
 package com.squadrant.repos;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.squadrant.App;
 import com.squadrant.model.StoredNotification;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class StoredNotificationRepository {
     private static final StoredNotificationRepository ourInstance = new StoredNotificationRepository();
+    private static final String filename = "stored_notifications.bin";
 
     // LiveData views
     private final MutableLiveData<List<StoredNotification>> notificationListLiveData = new MutableLiveData<>();
@@ -20,11 +30,9 @@ public class StoredNotificationRepository {
     public static StoredNotificationRepository getInstance() { return ourInstance; }
 
     private StoredNotificationRepository() {
-        // Temp code to display something for now
+        // Get stored notifications from previous sessions
         List<StoredNotification> notifications = readNotificationsFromFile();
         notificationListLiveData.setValue(notifications);
-
-        // Instead query and get the underlying value
     }
 
     public LiveData<List<StoredNotification>> getNotifications() {
@@ -43,7 +51,7 @@ public class StoredNotificationRepository {
         list.add(storedNotification);
         notificationListLiveData.setValue(list);
 
-        // Write to file for permanency
+        // Write to file for permanency on background thread
         writeNotificationsToFile(list);
     }
 
@@ -57,16 +65,43 @@ public class StoredNotificationRepository {
         list.remove(storedNotification);
         notificationListLiveData.setValue(list);
 
-        // Write to file for permanency
-        writeNotificationsToFile(list);
+        // Write to file for permanency on background thread
+       writeNotificationsToFile(list);
     }
 
     private void writeNotificationsToFile(List<StoredNotification> notifications) {
-        // TODO
+        Thread thread = new Thread(() -> {
+            try (
+                    FileOutputStream fos = App.getContext().openFileOutput(filename, Context.MODE_PRIVATE);
+                    ObjectOutputStream os = new ObjectOutputStream(fos)
+            ) {
+                // Do stuff here
+                os.writeObject(new CopyOnWriteArrayList<>(notifications));
+            } catch (FileNotFoundException e) {
+                Log.e("StoredNotificationRepository", "Writing exception: File not found");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
     }
 
+    @SuppressWarnings("unchecked")
     private List<StoredNotification> readNotificationsFromFile() {
-        // TODO
-        return null;
+        List<StoredNotification> list = new ArrayList<>();
+        try(
+            FileInputStream fis = App.getContext().openFileInput(filename);
+            ObjectInputStream is = new ObjectInputStream(fis)
+        ) {
+
+            list = (List<StoredNotification>) is.readObject();
+        } catch (FileNotFoundException e) {
+            Log.e("StoredNotificationRepository", "Reading exception: File not found");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            Log.e("StoredNotificationRepository", "Reading exception: Class not found");
+        }
+        return list;
     }
 }

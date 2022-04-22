@@ -11,6 +11,9 @@ import com.squadrant.model.StoredNotification;
 import com.squadrant.repos.StoredNotificationRepository;
 import com.squadrant.util.StoredNotificationBuilder;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class InterceptionService extends NotificationListenerService {
     private final String TAG = this.getClass().getSimpleName();
@@ -50,7 +53,8 @@ public class InterceptionService extends NotificationListenerService {
 
     private boolean shouldBlock(StatusBarNotification sbn) {
         // Blocking logic goes here
-        // TODO
-        return true;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Set<String> appFilter = preferences.getStringSet("app_filter_set", new HashSet<>());
+        return appFilter.contains(sbn.getPackageName());
     }
 }

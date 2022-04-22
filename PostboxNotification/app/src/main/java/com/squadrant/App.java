@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Build;
 
 public class App extends Application {
@@ -11,12 +12,17 @@ public class App extends Application {
     public static final String CHANNEL_1_ID = "channel1";
     public static final String CHANNEL_2_ID = "channel2";
 
+    private static Application application;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        application = this;
 
         createNotificationChannels();
     }
+
+    public static Context getContext() { return application.getApplicationContext(); }
 
     @SuppressLint("ObsoleteSdkInt")
     private void createNotificationChannels() {
@@ -26,18 +32,18 @@ public class App extends Application {
                     "Channel 1",
                     NotificationManager.IMPORTANCE_HIGH
             );
-            channel1.setDescription("This is channel 1");
+            channel1.setDescription("A debug channel for sending testing purposes");
+
             NotificationChannel channel2 = new NotificationChannel(
                     CHANNEL_2_ID,
                     "Channel 2",
                     NotificationManager.IMPORTANCE_LOW
             );
-            channel2.setDescription("This is channel 2");
+            channel2.setDescription("A debug channel for sending testing purposes");
 
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel1);
             manager.createNotificationChannel(channel2);
-
         }
     }
 }

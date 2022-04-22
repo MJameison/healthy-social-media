@@ -5,11 +5,16 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.text.format.DateUtils;
 
+import com.squadrant.App;
 import com.squadrant.postboxnotification.R;
 
-public class StoredNotificationUtils {
-    public static String getAppName(Context context, String packageName) {
+/**
+ * Contains utilities for converting package names to human readable data.
+ */
+public class PackageNameUtils {
+    public static String getAppName(String packageName) {
         ApplicationInfo ai;
+        Context context = App.getContext();
         try {
             ai = context.getPackageManager().getApplicationInfo(packageName, 0);
         } catch (PackageManager.NameNotFoundException e) {

@@ -28,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
+        // This is a lengthy operation so done now on a background thread
+        Thread thread = new Thread(settingsFragment::findAllApps);
+        thread.start();
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();

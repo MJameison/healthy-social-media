@@ -2,12 +2,15 @@ package com.squadrant.model;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * To decouple the notification storage from android specific features we have this data holding class that also implements conversion methods that extract the requisite information
  */
-public class StoredNotification {
+public class StoredNotification implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @NonNull
     private final String key;
 

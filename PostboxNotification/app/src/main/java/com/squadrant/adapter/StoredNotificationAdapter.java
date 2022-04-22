@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squadrant.model.StoredNotification;
 import com.squadrant.postboxnotification.R;
-import com.squadrant.util.StoredNotificationUtils;
+import com.squadrant.util.PackageNameUtils;
 
 import java.util.List;
 
@@ -38,20 +38,16 @@ public class StoredNotificationAdapter extends RecyclerView.Adapter<StoredNotifi
         StoredNotification storedNotification = notifications.get(position);
         if (storedNotification == null) return;
 
-        holder.appIconView.setImageResource(StoredNotificationUtils.getIconResource(storedNotification.notificationPackage));
-        holder.appNameView.setText(StoredNotificationUtils.getAppName(context, storedNotification.notificationPackage));
+        holder.appIconView.setImageResource(PackageNameUtils.getIconResource(storedNotification.notificationPackage));
+        holder.appNameView.setText(PackageNameUtils.getAppName(storedNotification.notificationPackage));
         holder.titleView.setText(storedNotification.notificationTitle);
         holder.contentView.setText(storedNotification.notificationContent);
-        holder.timeSentView.setText(StoredNotificationUtils.getTimeSent(context, storedNotification.notificationWhen));
+        holder.timeSentView.setText(PackageNameUtils.getTimeSent(context, storedNotification.notificationWhen));
     }
 
     @Override
     public int getItemCount() {
         return notifications.size();
-    }
-
-    public StoredNotification getAt(int position) {
-        return notifications.get(position);
     }
 
     class StoredNotificationViewHolder extends RecyclerView.ViewHolder {
