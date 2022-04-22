@@ -83,14 +83,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onResume() {
         super.onResume();
-        /*
         // if the user revoked permission update the preference display to match
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         if (!isNotificationServiceEnabled() && preferences.getBoolean("intercept_notifications", false)) {
             preferences.edit().putBoolean("intercept_notifications", false).apply();
         }
-
-         */
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -127,6 +124,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             appSwitch.setChecked(checked);
             appSwitch.setTitle(appName);
             appSwitch.setKey(packageName);
+            appSwitch.setIcon(PackageNameUtils.getAppIcon(packageName));
             appSwitch.setPersistent(false);
 
             // Set listener to handle custom write back to shared preferences

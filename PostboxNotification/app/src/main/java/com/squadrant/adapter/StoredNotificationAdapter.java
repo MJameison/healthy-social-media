@@ -1,6 +1,7 @@
 package com.squadrant.adapter;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squadrant.App;
 import com.squadrant.model.StoredNotification;
 import com.squadrant.postboxnotification.R;
 import com.squadrant.util.PackageNameUtils;
@@ -38,7 +40,8 @@ public class StoredNotificationAdapter extends RecyclerView.Adapter<StoredNotifi
         StoredNotification storedNotification = notifications.get(position);
         if (storedNotification == null) return;
 
-        holder.appIconView.setImageResource(PackageNameUtils.getIconResource(storedNotification.notificationPackage));
+        //holder.appIconView.setImageResource(PackageNameUtils.getIconResource(storedNotification.notificationPackage));
+        holder.appIconView.setImageDrawable(PackageNameUtils.getAppIcon(storedNotification.notificationPackage));
         holder.appNameView.setText(PackageNameUtils.getAppName(storedNotification.notificationPackage));
         holder.titleView.setText(storedNotification.notificationTitle);
         holder.contentView.setText(storedNotification.notificationContent);

@@ -3,7 +3,10 @@ package com.squadrant.util;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.text.format.DateUtils;
+
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.squadrant.App;
 import com.squadrant.postboxnotification.R;
@@ -27,15 +30,11 @@ public class PackageNameUtils {
         return DateUtils.formatDateTime(context, time, DateUtils.FORMAT_SHOW_TIME);
     }
 
-    public static int getIconResource(String packageName) {
-        // TODO: Populate with common SM apps
-        switch (packageName) {
-            case "com.google.android.apps.messaging":
-                return R.drawable.text_message;
-            case "com.example":
-                return R.drawable.f_logo_rgb_blue_512;
-            default:
-                return R.drawable.exclamation_mark;
+    public static Drawable getAppIcon(String packageName) {
+        try {
+            return App.getContext().getPackageManager().getApplicationIcon(packageName);
+        } catch (PackageManager.NameNotFoundException e) {
+            return AppCompatResources.getDrawable(App.getContext(), R.drawable.exclamation_mark);
         }
     }
 }
