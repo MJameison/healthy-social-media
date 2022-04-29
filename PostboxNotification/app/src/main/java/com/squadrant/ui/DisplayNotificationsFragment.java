@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,18 +16,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.squadrant.App;
 import com.squadrant.adapter.StoredNotificationAdapter;
 import com.squadrant.model.StoredNotification;
 import com.squadrant.postboxnotification.R;
+import com.squadrant.util.Settings;
 import com.squadrant.vm.NotificationsViewModel;
 import com.squadrant.vm.NotificationsViewModelFactory;
 
 import java.util.List;
+import java.util.Set;
 
 public class DisplayNotificationsFragment extends Fragment {
 
     RecyclerView notificationRecyclerView;
     NotificationsViewModel viewModel;
+    View displayNotificationsContainer;
+    //View displayHelpContainer;
+    TextView helpTextView;
+    Settings settings;
 
     @Nullable
     @Override
@@ -37,22 +45,44 @@ public class DisplayNotificationsFragment extends Fragment {
         // Get Views
         View rootView = inflater.inflate(R.layout.fragment_display_notifications, container, false);
         notificationRecyclerView = rootView.findViewById(R.id.notification_recycler_view);
+        //displayHelpContainer = rootView.findViewById(R.id.guide_user_container);
+        helpTextView = rootView.findViewById(R.id.help_text_view);
+        displayNotificationsContainer = rootView.findViewById(R.id.display_and_manage_notifications_container);
 
         // Setup view model + callbacks
         viewModel = new ViewModelProvider(this, new NotificationsViewModelFactory()).get(NotificationsViewModel.class);
         viewModel.getNotificationLiveData().observe(getViewLifecycleOwner(), this::initRecyclerView);
 
+        // Setup button callback
+        rootView.findViewById(R.id.clear_all_notifications_button).setOnClickListener(v -> viewModel.clear());
+
+        settings = Settings.getDefaultSettings(App.getContext());
+
         return rootView;
     }
 
     private void initRecyclerView(List<StoredNotification> notifications) {
-        if (notifications == null) {
-            Log.i("DisplayNotificationsFragment", "Is Null!");
-            return;
-        }
         if (notifications.isEmpty()) {
             Log.i("DisplayNotificationsFragment", "Is Empty!");
+
+            displayNotificationsContainer.setVisibility(View.GONE);
+            helpTextView.setVisibility(View.VISIBLE);
+
+            if (settings.getBoolean("intercept_notifications")) {
+                // Interception is on so this is just empty
+                helpTextView.setText(getString(R.string.no_mail_text));
+            } else {
+                // Interception disabled so prompt go to settings fragment
+                helpTextView.setText(getString(R.string.settings_prompt_text));
+            }
+
+            return;
         }
+
+        displayNotificationsContainer.setVisibility(View.VISIBLE);
+        helpTextView.setVisibility(View.GONE);
+
+        // Setup the recycler view
         StoredNotificationAdapter adapter = new StoredNotificationAdapter(requireContext(), notifications);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
         notificationRecyclerView.setLayoutManager(layoutManager);

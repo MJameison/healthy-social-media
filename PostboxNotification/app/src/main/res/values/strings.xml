@@ -8,7 +8,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
-    <string name="no_mail_text">No mail!</string>
+    <string name="no_mail_text">The postbox is empty!</string>
 
     <!--Bottom Navigation Bar titles-->
     <string name="nav_postbox_title">Inbox</string>
@@ -19,5 +19,8 @@
     <string name="debug_send_channel_one">Send on Channel 1</string>
     <string name="debug_send_channel_two">Send on Channel 2</string>
     <string name="debug_explanation_text">This is for debug purposes and allows you to easily generate notifications to test with.</string>
+    <string name="clear_all_notification_button_text">Empty Postbox</string>
+    <string name="view_notifications_guide_text">Swipe to discard notifications</string>
+    <string name="settings_prompt_text">Currently notification interception is disabled\nTo enable it please go to the settings page</string>
 
 </resources>

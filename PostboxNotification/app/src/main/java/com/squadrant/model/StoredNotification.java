@@ -30,6 +30,8 @@ public class StoredNotification implements Serializable {
         return key;
     }
 
+    public long getWhen() { return notificationWhen; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

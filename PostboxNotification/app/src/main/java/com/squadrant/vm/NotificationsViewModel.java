@@ -32,4 +32,8 @@ public class NotificationsViewModel extends ViewModel {
     }
 
     public void addNotification(StoredNotification sn) { repository.addItem(sn); }
+
+    public void clear() {
+        repository.clear();
+    }
 }
