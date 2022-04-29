@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Postbox Notification</string>
+    <string name="app_name">Notification Postbox</string>
 
     <!--Enable Listener Service-->
     <string name="notification_listener_service">Postbox Notifications</string>

@@ -40,7 +40,7 @@ public class UtilsTest {
 
         // Try with real inputs
         Assert.assertEquals("Chrome", PackageNameUtils.getAppName(c, "com.android.chrome"));
-        Assert.assertEquals("Postbox Notification", PackageNameUtils.getAppName(c, "com.squadrant.postboxnotification"));
+        Assert.assertEquals("Notification Postbox", PackageNameUtils.getAppName(c, "com.squadrant.postboxnotification"));
         Assert.assertEquals("Messages", PackageNameUtils.getAppName(c, "com.google.android.apps.messaging"));
     }
 
