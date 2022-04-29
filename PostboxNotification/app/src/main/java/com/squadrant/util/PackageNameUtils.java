@@ -6,18 +6,22 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.text.format.DateUtils;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.squadrant.App;
 import com.squadrant.postboxnotification.R;
 
+import java.util.Objects;
+
 /**
  * Contains utilities for converting package names to human readable data.
  */
 public class PackageNameUtils {
-    public static String getAppName(String packageName) {
+
+    @NonNull
+    public static String getAppName(@NonNull Context context, String packageName) {
         ApplicationInfo ai;
-        Context context = App.getContext();
         try {
             ai = context.getPackageManager().getApplicationInfo(packageName, 0);
         } catch (PackageManager.NameNotFoundException e) {
@@ -26,15 +30,17 @@ public class PackageNameUtils {
         return ai != null ? (String) context.getPackageManager().getApplicationLabel(ai) : "(unknown)";
     }
 
-    public static String getTimeSent(Context context, long time) {
+    @NonNull
+    public static String getTimeSent(@NonNull Context context, long time) {
         return DateUtils.formatDateTime(context, time, DateUtils.FORMAT_SHOW_TIME);
     }
 
-    public static Drawable getAppIcon(String packageName) {
+    @NonNull
+    public static Drawable getAppIcon(@NonNull Context context, String packageName) {
         try {
-            return App.getContext().getPackageManager().getApplicationIcon(packageName);
+            return context.getPackageManager().getApplicationIcon(packageName);
         } catch (PackageManager.NameNotFoundException e) {
-            return AppCompatResources.getDrawable(App.getContext(), R.drawable.exclamation_mark);
+            return Objects.requireNonNull(AppCompatResources.getDrawable(context, R.drawable.exclamation_mark));
         }
     }
 }

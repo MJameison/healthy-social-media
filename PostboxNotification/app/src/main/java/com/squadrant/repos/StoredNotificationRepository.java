@@ -21,17 +21,28 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class StoredNotificationRepository {
     private static final StoredNotificationRepository ourInstance = new StoredNotificationRepository();
-    private static final String filename = "stored_notifications.bin";
+    private static boolean loadedData;
 
     // LiveData views
     private final MutableLiveData<List<StoredNotification>> notificationListLiveData = new MutableLiveData<>();
 
+    // Interfaces to storage
+    private static StoredNotificationLocalDataStore localDataStore;
 
-    public static StoredNotificationRepository getInstance() { return ourInstance; }
+    public static StoredNotificationRepository getInstance() {
+        if (!loadedData)
+            ourInstance.loadDataFromSources();
+        return ourInstance;
+    }
 
     private StoredNotificationRepository() {
+        loadedData = false;
+        localDataStore = new StoredNotificationLocalDataStore();
+    }
+
+    private void loadDataFromSources() {
         // Get stored notifications from previous sessions
-        List<StoredNotification> notifications = readNotificationsFromFile();
+        List<StoredNotification> notifications = localDataStore.readNotificationsFromFile();
         notificationListLiveData.setValue(notifications);
     }
 
@@ -52,7 +63,7 @@ public class StoredNotificationRepository {
         notificationListLiveData.setValue(list);
 
         // Write to file for permanency on background thread
-        writeNotificationsToFile(list);
+        localDataStore.writeNotificationsToFile(list);
     }
 
     public void removeItem(StoredNotification storedNotification) {
@@ -66,42 +77,6 @@ public class StoredNotificationRepository {
         notificationListLiveData.setValue(list);
 
         // Write to file for permanency on background thread
-       writeNotificationsToFile(list);
-    }
-
-    private void writeNotificationsToFile(List<StoredNotification> notifications) {
-        Thread thread = new Thread(() -> {
-            try (
-                    FileOutputStream fos = App.getContext().openFileOutput(filename, Context.MODE_PRIVATE);
-                    ObjectOutputStream os = new ObjectOutputStream(fos)
-            ) {
-                // Do stuff here
-                os.writeObject(new CopyOnWriteArrayList<>(notifications));
-            } catch (FileNotFoundException e) {
-                Log.e("StoredNotificationRepository", "Writing exception: File not found");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        thread.start();
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<StoredNotification> readNotificationsFromFile() {
-        List<StoredNotification> list = new ArrayList<>();
-        try(
-            FileInputStream fis = App.getContext().openFileInput(filename);
-            ObjectInputStream is = new ObjectInputStream(fis)
-        ) {
-
-            list = (List<StoredNotification>) is.readObject();
-        } catch (FileNotFoundException e) {
-            Log.e("StoredNotificationRepository", "Reading exception: File not found");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            Log.e("StoredNotificationRepository", "Reading exception: Class not found");
-        }
-        return list;
+        localDataStore.writeNotificationsToFile(list);
     }
 }

@@ -1,30 +1,28 @@
 package com.squadrant;
 
-import android.content.SharedPreferences;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
-import android.util.Log;
-
-import androidx.preference.PreferenceManager;
 
 import com.squadrant.model.StoredNotification;
 import com.squadrant.repos.StoredNotificationRepository;
+import com.squadrant.util.Settings;
 import com.squadrant.util.StoredNotificationBuilder;
 
-import java.util.HashSet;
 import java.util.Set;
 
 
 public class InterceptionService extends NotificationListenerService {
-    private final String TAG = this.getClass().getSimpleName();
+    Settings settings;
+
+    public InterceptionService() {
+        settings = Settings.getDefaultSettings(App.getContext());
+    }
 
     @Override
     public void onNotificationPosted (StatusBarNotification sbn) {
         // Check if we should block the notification
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        boolean interceptionEnabled = preferences.getBoolean("intercept_notifications", false);
-        boolean blockingEnabled = preferences.getBoolean("block_notifications", false);
+        boolean interceptionEnabled = settings.getBoolean("intercept_notifications");
+        boolean blockingEnabled = settings.getBoolean("block_notifications");
 
         if (interceptionEnabled && shouldBlock(sbn)) {
             // Add notification to the repository
@@ -38,11 +36,10 @@ public class InterceptionService extends NotificationListenerService {
 
     @Override
     public void onNotificationRemoved (StatusBarNotification sbn) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        boolean interceptionEnabled = preferences.getBoolean("intercept_notifications", false);
-        boolean blockingEnabled = preferences.getBoolean("block_notifications", false);
-        boolean removeCancelled = preferences.getBoolean("remove_cancelled", false);
+        boolean interceptionEnabled = settings.getBoolean("intercept_notifications");
+        boolean blockingEnabled = settings.getBoolean("block_notifications");
+        boolean removeCancelled = settings.getBoolean("remove_cancelled");
 
         if (interceptionEnabled && removeCancelled && !blockingEnabled) {
             // Remove the notification since the app wants us to
@@ -52,9 +49,8 @@ public class InterceptionService extends NotificationListenerService {
     }
 
     private boolean shouldBlock(StatusBarNotification sbn) {
-        // Blocking logic goes here
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Set<String> appFilter = preferences.getStringSet("app_filter_set", new HashSet<>());
+        Set<String> appFilter = settings.getStringSet("app_filter_set");
+        String pkg = sbn.getPackageName();
         return appFilter.contains(sbn.getPackageName());
     }
 }

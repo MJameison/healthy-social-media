@@ -2,7 +2,6 @@ package com.squadrant.ui;
 
 import android.content.ComponentName;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -11,12 +10,12 @@ import android.util.Log;
 
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.squadrant.App;
 import com.squadrant.postboxnotification.R;
 import com.squadrant.util.PackageNameUtils;
+import com.squadrant.util.SharedPreferencesSettings;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -30,6 +29,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private static final String APP_FILTER_SET = "app_filter_set";
 
     private static List<AppFilterItem> appItems = new ArrayList<>();
+
+    private final com.squadrant.util.Settings settings = new SharedPreferencesSettings(App.getContext());
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -84,9 +85,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onResume() {
         super.onResume();
         // if the user revoked permission update the preference display to match
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        if (!isNotificationServiceEnabled() && preferences.getBoolean("intercept_notifications", false)) {
-            preferences.edit().putBoolean("intercept_notifications", false).apply();
+        if (!isNotificationServiceEnabled() && settings.getBoolean("intercept_notifications")) {
+            settings.setBoolean("intercept_notifications", false);
         }
     }
 
@@ -113,9 +113,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         public AppFilterItem(String packageName) {
             this.packageName = packageName;
-            this.appName = PackageNameUtils.getAppName(packageName);
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
-            Set<String> appFilter = prefs.getStringSet(APP_FILTER_SET, new HashSet<>());
+            this.appName = PackageNameUtils.getAppName(App.getContext(), packageName);
+            Set<String> appFilter = settings.getStringSet(APP_FILTER_SET);
             this.checked = appFilter.contains(packageName);
         }
 
@@ -124,7 +123,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             appSwitch.setChecked(checked);
             appSwitch.setTitle(appName);
             appSwitch.setKey(packageName);
-            appSwitch.setIcon(PackageNameUtils.getAppIcon(packageName));
+            appSwitch.setIcon(PackageNameUtils.getAppIcon(App.getContext(), packageName));
             appSwitch.setPersistent(false);
 
             // Set listener to handle custom write back to shared preferences
@@ -132,16 +131,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 String key = preference.getKey();
                 boolean value = (boolean) newValue;
 
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
                 // Get the current appFilter
-                Set<String> newSet = new HashSet<>(prefs.getStringSet(APP_FILTER_SET, new HashSet<>()));
+                Set<String> newSet = settings.getStringSet(APP_FILTER_SET);
                 if (value) {
                     newSet.add(key);
                 } else {
                     newSet.remove(key);
                 }
                 // Write back
-                prefs.edit().putStringSet(APP_FILTER_SET, newSet).apply();
+                settings.writeStringSet(APP_FILTER_SET, newSet);
 
                 return true;
             });

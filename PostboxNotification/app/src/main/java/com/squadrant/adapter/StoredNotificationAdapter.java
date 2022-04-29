@@ -41,8 +41,8 @@ public class StoredNotificationAdapter extends RecyclerView.Adapter<StoredNotifi
         if (storedNotification == null) return;
 
         //holder.appIconView.setImageResource(PackageNameUtils.getIconResource(storedNotification.notificationPackage));
-        holder.appIconView.setImageDrawable(PackageNameUtils.getAppIcon(storedNotification.notificationPackage));
-        holder.appNameView.setText(PackageNameUtils.getAppName(storedNotification.notificationPackage));
+        holder.appIconView.setImageDrawable(PackageNameUtils.getAppIcon(App.getContext(), storedNotification.notificationPackage));
+        holder.appNameView.setText(PackageNameUtils.getAppName(App.getContext(), storedNotification.notificationPackage));
         holder.titleView.setText(storedNotification.notificationTitle);
         holder.contentView.setText(storedNotification.notificationContent);
         holder.timeSentView.setText(PackageNameUtils.getTimeSent(context, storedNotification.notificationWhen));

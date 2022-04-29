@@ -19,6 +19,7 @@ import com.squadrant.adapter.StoredNotificationAdapter;
 import com.squadrant.model.StoredNotification;
 import com.squadrant.postboxnotification.R;
 import com.squadrant.vm.NotificationsViewModel;
+import com.squadrant.vm.NotificationsViewModelFactory;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class DisplayNotificationsFragment extends Fragment {
         notificationRecyclerView = rootView.findViewById(R.id.notification_recycler_view);
 
         // Setup view model + callbacks
-        viewModel = new ViewModelProvider(this).get(NotificationsViewModel.class);
+        viewModel = new ViewModelProvider(this, new NotificationsViewModelFactory()).get(NotificationsViewModel.class);
         viewModel.getNotificationLiveData().observe(getViewLifecycleOwner(), this::initRecyclerView);
 
         return rootView;

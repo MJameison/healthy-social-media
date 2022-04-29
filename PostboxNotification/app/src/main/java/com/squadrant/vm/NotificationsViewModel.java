@@ -11,12 +11,13 @@ import java.util.Objects;
 
 public class NotificationsViewModel extends ViewModel {
 
-    private final StoredNotificationRepository repository = StoredNotificationRepository.getInstance();
+    private final StoredNotificationRepository repository;
     private final LiveData<List<StoredNotification>> notificationLiveData;
 
-    public NotificationsViewModel() {
+    public NotificationsViewModel(StoredNotificationRepository repository) {
         super();
-        notificationLiveData = repository.getNotifications();
+        this.repository = repository;
+        notificationLiveData = this.repository.getNotifications();
     }
 
     public LiveData<List<StoredNotification>> getNotificationLiveData() { return notificationLiveData; }
@@ -30,7 +31,5 @@ public class NotificationsViewModel extends ViewModel {
         return sn;
     }
 
-    public void addNotification(StoredNotification sn) {
-        repository.addItem(sn);
-    }
+    public void addNotification(StoredNotification sn) { repository.addItem(sn); }
 }
