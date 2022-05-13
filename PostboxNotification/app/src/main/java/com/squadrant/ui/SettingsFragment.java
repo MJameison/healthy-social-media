@@ -19,7 +19,6 @@ import com.squadrant.util.SharedPreferencesSettings;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -90,10 +89,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
     }
 
+    public void updateFragmentUI() {
+        Set<String> appFilter = settings.getStringSet(APP_FILTER_SET);
+        for (AppFilterItem afi : appItems) {
+            afi.updateChecked(appFilter);
+        }
+    }
+
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isNotificationServiceEnabled(){
         String pkgName = requireContext().getPackageName();
-        String[] listeners = Settings.Secure.getString(requireContext().getContentResolver(), "enabled_notification_listeners").split(":");
+        String listenersStr = Settings.Secure.getString(requireContext().getContentResolver(), "enabled_notification_listeners");
+        if (listenersStr == null) return false;
+        String[] listeners = listenersStr.split(":");
         for (String name : listeners) {
             final ComponentName cn = ComponentName.unflattenFromString(name);
             if (cn != null && TextUtils.equals(pkgName, cn.getPackageName()))
@@ -115,6 +123,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             this.packageName = packageName;
             this.appName = PackageNameUtils.getAppName(App.getContext(), packageName);
             Set<String> appFilter = settings.getStringSet(APP_FILTER_SET);
+            this.checked = appFilter.contains(packageName);
+        }
+
+        public void updateChecked(Set<String> appFilter) {
             this.checked = appFilter.contains(packageName);
         }
 
