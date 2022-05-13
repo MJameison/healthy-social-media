@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
                         .setReorderingAllowed(true)
                         .replace(R.id.fragment_container_view, settingsFragment)
                         .commit();
-                settingsFragment.updateFragmentUI();
                 return true;
             }
             if (itemId == R.id.nav_debug) {
