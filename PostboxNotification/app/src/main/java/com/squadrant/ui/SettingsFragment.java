@@ -89,13 +89,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
     }
 
-    public void updateFragmentUI() {
-        Set<String> appFilter = settings.getStringSet(APP_FILTER_SET);
-        for (AppFilterItem afi : appItems) {
-            afi.updateChecked(appFilter);
-        }
-    }
-
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isNotificationServiceEnabled(){
         String pkgName = requireContext().getPackageName();
@@ -126,10 +119,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             this.checked = appFilter.contains(packageName);
         }
 
-        public void updateChecked(Set<String> appFilter) {
-            this.checked = appFilter.contains(packageName);
-        }
-
         public SwitchPreferenceCompat createSwitchPreference() {
             SwitchPreferenceCompat appSwitch = new SwitchPreferenceCompat(getPreferenceManager().getContext());
             appSwitch.setChecked(checked);
@@ -152,6 +141,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 }
                 // Write back
                 settings.writeStringSet(APP_FILTER_SET, newSet);
+                
+                checked = value;
 
                 return true;
             });
